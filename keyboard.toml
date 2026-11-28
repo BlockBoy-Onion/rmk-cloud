@@ -1,17 +1,18 @@
-# Documentation: https://rmk.rs/docs/configuration/
 [keyboard]
 name = "RMK Keyboard"
 product_name = "RMK Keyboard"
 vendor_id = 0x4c4b
 product_id = 0x4643
-manufacturer = "RMK"
-chip = "stm32f103tb"
+manufacturer = "haobo"
+chip = "esp32c6"
+usb_enable = false
 
 [matrix]
-# Row and col pins are mandatory
-row_pins = ["PA0", "PA1", "PA2", "PA3"]
-col_pins = ["PB7", "PB6", "PB5"]
-# RMK uses col2row as the default matrix diode direction, if you want to use a row2col matrix, add `row2col = true`
+# Matrix pins are required.
+row_pins = ["GPIO6", "GPIO7", "GPIO20", "GPIO21"]
+col_pins = ["GPIO3", "GPIO4", "GPIO5"]
+
+# Default diode direction is col2row; set `row2col = true` if needed.
 # row2col = true
 
 [layout]
@@ -25,8 +26,6 @@ map = """
 """
 
 [keymap]
-# One more layer than is defined below: the keymap references layer 2
-# (LT(2, ...), TG(2)), which stays empty until the user fills it in.
 layers = 3
 
 [[keymap.layer]] # layer 0
@@ -44,3 +43,33 @@ _  _      _
 _  _      _
 _  _      _
 """
+
+[light]
+# All light pins are high-active by default, uncomment if you want it to be low-active
+# capslock.pin = "GPIO8"
+# capslock.low_active = true
+# scrolllock.pin = "GPIO9"
+# scrolllock.low_active = true
+# Just ignore if no light pin is used for it
+# numslock.pin = "GPIO10"
+# numslock.low_active = true
+
+[storage]
+# Storage is enabled by default.
+# enabled = false
+
+[ble]
+enabled = true
+
+[battery]
+battery_adc_pin = "GPIO2"
+battery_user_description = "Main"
+# If the voltage divider is used for adc, you can use the following two values to define a voltage divider.
+# For example, nice!nano have 806 + 2M resistors, the saadc measures voltage on 2M resistor, so the two values should be set to 2000 and 2806
+# Measured resistance for input adc, it should be less than adc_divider_total
+adc_divider_measured = 2000
+adc_divider_total = 2806
+# Optional charging input and indicator LED.
+# low_active = true means charging / LED on when the pin is low.
+# charge_state = { pin = "P0_20", low_active = true }
+# charge_led = { pin = "P0_21", low_active = false }
